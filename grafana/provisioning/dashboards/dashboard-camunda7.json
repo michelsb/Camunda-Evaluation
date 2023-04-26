@@ -3,7 +3,10 @@
     "list": [
       {
         "builtIn": 1,
-        "datasource": "Prometheus",
+        "datasource": {
+          "type": "prometheus",
+          "uid": "PBFA97CFB590B2093"
+        },
         "enable": true,
         "hide": true,
         "iconColor": "rgba(0, 211, 255, 1)",
@@ -21,6 +24,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
+  "id": 3,
   "links": [],
   "liveNow": false,
   "panels": [
@@ -72,17 +76,19 @@
         },
         "textMode": "auto"
       },
-      "pluginVersion": "8.3.4",
+      "pluginVersion": "9.4.7",
       "targets": [
         {
           "datasource": {
             "type": "prometheus",
             "uid": "PBFA97CFB590B2093"
           },
+          "editorMode": "code",
           "exemplar": true,
-          "expr": "avg(rate(pi_completed_total[1m]))",
+          "expr": "avg(rate(pi_completed_total{job=\"spring-boot-camunda7\"}[1m]))",
           "interval": "",
           "legendFormat": "",
+          "range": true,
           "refId": "A"
         }
       ],
@@ -100,6 +106,8 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
             "axisLabel": "",
             "axisPlacement": "auto",
             "barAlignment": 0,
@@ -183,10 +191,12 @@
         "legend": {
           "calcs": [],
           "displayMode": "list",
-          "placement": "bottom"
+          "placement": "bottom",
+          "showLegend": true
         },
         "tooltip": {
-          "mode": "single"
+          "mode": "single",
+          "sort": "none"
         }
       },
       "pluginVersion": "8.3.4",
@@ -196,10 +206,12 @@
             "type": "prometheus",
             "uid": "PBFA97CFB590B2093"
           },
+          "editorMode": "code",
           "exemplar": true,
-          "expr": "rate(pi_started_total[1m])",
+          "expr": "rate(pi_started_total{job=\"spring-boot-camunda7\"}[1m])",
           "interval": "",
           "legendFormat": "PI Started",
+          "range": true,
           "refId": "A"
         },
         {
@@ -207,11 +219,13 @@
             "type": "prometheus",
             "uid": "PBFA97CFB590B2093"
           },
+          "editorMode": "code",
           "exemplar": true,
-          "expr": "rate(pi_backpressure_total[1m])",
+          "expr": "rate(pi_backpressure_total{job=\"spring-boot-camunda7\"}[1m])",
           "hide": false,
           "interval": "",
           "legendFormat": "PI Backpressure",
+          "range": true,
           "refId": "B"
         },
         {
@@ -219,11 +233,13 @@
             "type": "prometheus",
             "uid": "PBFA97CFB590B2093"
           },
+          "editorMode": "code",
           "exemplar": true,
-          "expr": "rate(jobs_completed_total[1m])",
+          "expr": "rate(jobs_completed_total{job=\"spring-boot-camunda7\"}[1m])",
           "hide": false,
           "interval": "",
           "legendFormat": "Jobs Completed",
+          "range": true,
           "refId": "C"
         },
         {
@@ -231,11 +247,13 @@
             "type": "prometheus",
             "uid": "PBFA97CFB590B2093"
           },
+          "editorMode": "code",
           "exemplar": true,
-          "expr": "rate(pi_completed_total[1m])",
+          "expr": "rate(pi_completed_total{job=\"spring-boot-camunda7\"}[1m])",
           "hide": false,
           "interval": "",
           "legendFormat": "PI Completed",
+          "range": true,
           "refId": "D"
         },
         {
@@ -243,11 +261,13 @@
             "type": "prometheus",
             "uid": "PBFA97CFB590B2093"
           },
+          "editorMode": "code",
           "exemplar": true,
-          "expr": "rate(jobs_completed_total[1m]) / rate(pi_started_total[1m])",
+          "expr": "rate(jobs_completed_total{job=\"spring-boot-camunda7\"}[1m]) / rate(pi_started_total{job=\"spring-boot-camunda7\"}[1m])",
           "hide": false,
           "interval": "",
           "legendFormat": "Task/PI Ratio",
+          "range": true,
           "refId": "E"
         }
       ],
@@ -299,17 +319,19 @@
         },
         "textMode": "auto"
       },
-      "pluginVersion": "8.3.4",
+      "pluginVersion": "9.4.7",
       "targets": [
         {
           "datasource": {
             "type": "prometheus",
             "uid": "PBFA97CFB590B2093"
           },
+          "editorMode": "code",
           "exemplar": true,
-          "expr": "pi_cycletime_seconds_sum / pi_cycletime_seconds_count",
+          "expr": "pi_cycletime_seconds_sum{job=\"spring-boot-camunda7\"} / pi_cycletime_seconds_count{job=\"spring-boot-camunda7\"}",
           "interval": "",
           "legendFormat": "",
+          "range": true,
           "refId": "A"
         }
       ],
@@ -327,6 +349,8 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
             "axisLabel": "",
             "axisPlacement": "auto",
             "barAlignment": 0,
@@ -381,11 +405,13 @@
       "options": {
         "legend": {
           "calcs": [],
-          "displayMode": "hidden",
-          "placement": "bottom"
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": false
         },
         "tooltip": {
-          "mode": "single"
+          "mode": "single",
+          "sort": "none"
         }
       },
       "targets": [
@@ -394,8 +420,9 @@
             "type": "prometheus",
             "uid": "PBFA97CFB590B2093"
           },
+          "editorMode": "code",
           "exemplar": true,
-          "expr": "rate(pi_cycletime_seconds_sum[1m]) / rate(pi_cycletime_seconds_count[1m]) * 1000",
+          "expr": "rate(pi_cycletime_seconds_sum{job=\"spring-boot-camunda7\"}[1m]) / rate(pi_cycletime_seconds_count{job=\"spring-boot-camunda7\"}[1m]) * 1000",
           "format": "time_series",
           "instant": false,
           "interval": "",
@@ -455,17 +482,19 @@
         },
         "textMode": "auto"
       },
-      "pluginVersion": "8.3.4",
+      "pluginVersion": "9.4.7",
       "targets": [
         {
           "datasource": {
             "type": "prometheus",
             "uid": "PBFA97CFB590B2093"
           },
+          "editorMode": "code",
           "exemplar": true,
-          "expr": "rate(jobs_completed_total[1m]) / rate(pi_started_total[1m])",
+          "expr": "rate(jobs_completed_total{job=\"spring-boot-camunda7\"}[1m]) / rate(pi_started_total{job=\"spring-boot-camunda7\"}[1m])",
           "interval": "",
           "legendFormat": "",
+          "range": true,
           "refId": "A"
         }
       ],
@@ -483,6 +512,8 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
             "axisLabel": "",
             "axisPlacement": "auto",
             "barAlignment": 0,
@@ -538,10 +569,12 @@
         "legend": {
           "calcs": [],
           "displayMode": "list",
-          "placement": "bottom"
+          "placement": "bottom",
+          "showLegend": true
         },
         "tooltip": {
-          "mode": "single"
+          "mode": "single",
+          "sort": "none"
         }
       },
       "targets": [
@@ -550,10 +583,12 @@
             "type": "prometheus",
             "uid": "PBFA97CFB590B2093"
           },
+          "editorMode": "code",
           "exemplar": true,
-          "expr": "pi_exception_total",
+          "expr": "pi_exception_total{job=\"spring-boot-camunda7\"}",
           "interval": "",
           "legendFormat": "{{exception}}",
+          "range": true,
           "refId": "A"
         }
       ],
@@ -571,6 +606,8 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
             "axisLabel": "",
             "axisPlacement": "auto",
             "barAlignment": 0,
@@ -626,10 +663,12 @@
         "legend": {
           "calcs": [],
           "displayMode": "list",
-          "placement": "bottom"
+          "placement": "bottom",
+          "showLegend": true
         },
         "tooltip": {
-          "mode": "single"
+          "mode": "single",
+          "sort": "none"
         }
       },
       "targets": [
@@ -638,10 +677,12 @@
             "type": "prometheus",
             "uid": "PBFA97CFB590B2093"
           },
+          "editorMode": "code",
           "exemplar": true,
-          "expr": "jobs_exception_total",
+          "expr": "jobs_exception_total{job=\"spring-boot-camunda7\"}",
           "interval": "",
           "legendFormat": "{{exception}}",
+          "range": true,
           "refId": "A"
         }
       ],
@@ -663,8 +704,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               }
             ]
           },
@@ -693,17 +733,19 @@
         },
         "textMode": "auto"
       },
-      "pluginVersion": "8.3.4",
+      "pluginVersion": "9.4.7",
       "targets": [
         {
           "datasource": {
             "type": "prometheus",
             "uid": "PBFA97CFB590B2093"
           },
+          "editorMode": "code",
           "exemplar": true,
-          "expr": "sum(pi_started_total)",
+          "expr": "sum(pi_started_total{job=\"spring-boot-camunda7\"})",
           "interval": "",
           "legendFormat": "PI",
+          "range": true,
           "refId": "A"
         },
         {
@@ -711,11 +753,13 @@
             "type": "prometheus",
             "uid": "PBFA97CFB590B2093"
           },
+          "editorMode": "code",
           "exemplar": true,
-          "expr": "sum(pi_exception_total)",
+          "expr": "sum(pi_exception_total{job=\"spring-boot-camunda7\"})",
           "hide": false,
           "interval": "",
           "legendFormat": "Errors",
+          "range": true,
           "refId": "B"
         }
       ],
@@ -756,6 +800,8 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
             "axisLabel": "",
             "axisPlacement": "auto",
             "barAlignment": 0,
@@ -788,8 +834,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -811,10 +856,12 @@
         "legend": {
           "calcs": [],
           "displayMode": "list",
-          "placement": "bottom"
+          "placement": "bottom",
+          "showLegend": true
         },
         "tooltip": {
-          "mode": "single"
+          "mode": "single",
+          "sort": "none"
         }
       },
       "pluginVersion": "8.3.4",
@@ -824,12 +871,14 @@
             "type": "prometheus",
             "uid": "PBFA97CFB590B2093"
           },
+          "editorMode": "code",
           "exemplar": true,
-          "expr": "pi_cycletime_seconds",
+          "expr": "pi_cycletime_seconds{job=\"spring-boot-camunda7\"}",
           "format": "heatmap",
           "interval": "",
           "intervalFactor": 1,
           "legendFormat": "{{quantile}}",
+          "range": true,
           "refId": "A"
         }
       ],
@@ -847,6 +896,8 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
             "axisLabel": "",
             "axisPlacement": "auto",
             "barAlignment": 0,
@@ -879,8 +930,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -902,10 +952,12 @@
         "legend": {
           "calcs": [],
           "displayMode": "list",
-          "placement": "bottom"
+          "placement": "bottom",
+          "showLegend": true
         },
         "tooltip": {
-          "mode": "single"
+          "mode": "single",
+          "sort": "none"
         }
       },
       "targets": [
@@ -914,10 +966,12 @@
             "type": "prometheus",
             "uid": "PBFA97CFB590B2093"
           },
+          "editorMode": "code",
           "exemplar": true,
-          "expr": "rate(executor_completed_tasks_total[1m])",
+          "expr": "rate(executor_completed_tasks_total{job=\"spring-boot-camunda7\"}[1m])",
           "interval": "",
           "legendFormat": "{{name}}",
+          "range": true,
           "refId": "A"
         }
       ],
@@ -926,7 +980,8 @@
     }
   ],
   "refresh": "5s",
-  "schemaVersion": 34,
+  "revision": 1,
+  "schemaVersion": 38,
   "style": "dark",
   "tags": [],
   "templating": {
@@ -938,8 +993,8 @@
   },
   "timepicker": {},
   "timezone": "",
-  "title": "Benchmark",
-  "uid": "VEPGQXPnk",
-  "version": 4,
+  "title": "Benchmark - Camunda 7",
+  "uid": "hgcMzis4k",
+  "version": 2,
   "weekStart": ""
 }
