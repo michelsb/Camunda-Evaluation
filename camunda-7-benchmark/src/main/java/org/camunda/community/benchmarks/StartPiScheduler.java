@@ -147,8 +147,62 @@ public class StartPiScheduler {
             adjustByUsingBackpressure();
         } else if ("jobRatio".equals(config.getStartRateAdjustmentStrategy())) {
             adjustByUsingJobCompletionRatio();
+        } else if ("piException".equals(config.getStartRateAdjustmentStrategy())) {
+            adjustByUsingProcessException();
+        } else if ("piRatio".equals(config.getStartRateAdjustmentStrategy())) {
+            adjustByUsingPIRatio();
         } else {
             throw new RuntimeException("Invalid value for startRateAdjustmentStrategy: " + config.getStartRateAdjustmentStrategy());
+        }
+    }
+
+    public void adjustByUsingPIRatio() {
+
+        double piStartedRate = stats.getStartedPiMeter().getOneMinuteRate();
+        double piCompletedRate = stats.getCompletedProcessInstancesMeter().getOneMinuteRate();
+        long rate = 0;
+
+        // Calculate current ration jobCompletion/startRate
+        double ratio = stats.getCompletedJobsMeter().getOneMinuteRate() / stats.getStartedPiMeter().getOneMinuteRate();
+
+        if (ratio >= bestRatio) {
+            LOG.info("Found better ratio: "+ratio+" (instead of "+bestRatio+"). Remember start rate " + piStartedGoal);
+            bestRatio = ratio;
+            bestStartRate = piStartedGoal;
+        } else {
+            if (bestStartRate < piStartedGoal) {
+                LOG.info("Ratio is getting worse: " + ratio + " (instead of " + bestRatio + "). Set original start rate " + bestStartRate);
+                adjustStartRateTo(bestStartRate);
+                return;
+            }
+        }
+
+        if (piStartedRate < (0.5*piStartedGoal)) {
+            rate = Math.round(Math.ceil(piStartedRate));
+            LOG.info("Started PI one minute rate of "+piStartedRate+" less than 50% of delimited Start PI per second of "+config.getStartPiPerSecond()+", drop start rate to " + rate );
+            adjustStartRateTo(rate);
+        } else {
+            if (piCompletedRate < (0.5*piStartedRate)) {
+                //rate = Math.round(Math.ceil((double)config.getStartPiPerSecond()/10));
+                rate = Math.round(Math.ceil((double)piStartedRate/2));
+                LOG.info("Completed PI one minute rate of "+piCompletedRate+" less than 50% of current PI Started Rate  of "+piStartedRate+", drop start rate to " + rate );
+                adjustStartRateTo(rate);
+            } else {
+                // Compare against last minute rate
+                if (ratio <= 0.8*config.getTaskPiRatio()) { // keep slightly bigger then 0 to make sure we are going to the limit and not stay in a relaxed rate that fulfills the ratio
+                    // if it drops - go back in start rate
+                    rate = Math.round(Math.ceil((double)config.getStartPiPerSecond()/10));
+                    LOG.info("Task/PI too low: "+ratio+", decrease start rate by " + rate );
+                    adjustStartRateBy( -1 * rate );
+                } else {
+                    if (ratio >= 0.95*config.getTaskPiRatio()) {
+                        // otherwise increase start rate
+                        rate = Math.round(Math.ceil((double) config.getStartPiPerSecond() / 10));
+                        LOG.info("Task/PI too high: " + ratio + ", increase start rate by " + rate);
+                        adjustStartRateBy(rate);
+                    }
+                }
+            }
         }
     }
 
@@ -159,8 +213,8 @@ public class StartPiScheduler {
         double ratio = stats.getCompletedJobsMeter().getOneMinuteRate() / stats.getStartedPiMeter().getOneMinuteRate();
 
         if (ratio >= bestRatio) {
-            bestRatio = ratio;
             LOG.info("Found better ratio: "+ratio+" (instead of "+bestRatio+"). Remember start rate " + piStartedGoal);
+            bestRatio = ratio;
             bestStartRate = piStartedGoal;
         } else {
             LOG.info("Ratio is getting worse: "+ratio+" (instead of "+bestRatio+"). Set original start rate " + bestStartRate);
@@ -206,6 +260,34 @@ public class StartPiScheduler {
                 adjustStartRateBy(rate);
             }
         }
+    }
+    public void adjustByUsingProcessException() {
+        // Handle "almost no exception" as special case with small numbers
+        long rate = 0;
+        if (stats.getProcessInstancesExceptionOnStartPiMeter().getOneMinuteRate() < 1) {
+            // increase it by bigger junk (10% of goal)
+            rate = Math.round(Math.ceil((float)config.getStartPiPerSecond()/10));
+            LOG.info("Exception percentage (one minute rate) less than 1%, increasing start rate by " + rate );
+        }  else {
+            double exceptionPercentage = stats.getProcessInstancesExceptionOnStartPercentage();
+            if (exceptionPercentage > config.getMaxPIExceptionPercentage()) {
+                // Exception too high - reduce start rate
+                rate = Math.round((config.getMaxPIExceptionPercentage() - exceptionPercentage)/100 * piStartedGoal * config.getStartPiReduceFactor());
+                if ((piStartedGoal>=1)&&(rate==0)) {
+                    rate = -1;
+                }
+                LOG.info("Backpressure percentage too high ("+exceptionPercentage+" > "+config.getMaxPIExceptionPercentage()+"), reducing start rate by " + rate );
+            } else{
+                // Exception is there, but lower than the maximum considered optimal for throughput
+                // slightly increase start rate
+                rate = Math.round((config.getMaxPIExceptionPercentage() - exceptionPercentage)/100 * piStartedGoal * config.getStartPiIncreaseFactor());
+                if (rate==0) {
+                    rate = 1;
+                }
+                LOG.info("Backpressure percentage too low ("+exceptionPercentage+" <= "+config.getMaxPIExceptionPercentage()+"), increasing start rate by " + rate );
+            }
+        }
+        adjustStartRateBy(rate);
     }
 
     private void adjustStartRateTo(long amount) {

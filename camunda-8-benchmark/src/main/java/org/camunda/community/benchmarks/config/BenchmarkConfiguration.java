@@ -24,11 +24,12 @@ public class BenchmarkConfiguration {
     private long warmupPhaseDurationMillis = 0;
     private String startRateAdjustmentStrategy="backpressure";
 
-    private double maxBackpressurePercentage = 10;
+    private double maxBackpressurePercentage = 10.0;
+    private double maxPIExceptionPercentage = 10.0;
     private double startPiReduceFactor = 0.4;
     private double startPiIncreaseFactor = 0.4;
 
-    private int taskPiRatio;
+    private int taskPiRatio = 10;
 
     //Specifies the maximum amount of tasks that can be fetched within one request. Default is 1000 jobs
     private int maxJobs = 1000;
@@ -135,6 +136,14 @@ public class BenchmarkConfiguration {
 
     public void setMaxBackpressurePercentage(double maxBackpressurePercentage) {
         this.maxBackpressurePercentage = maxBackpressurePercentage;
+    }
+
+    public double getMaxPIExceptionPercentage() {
+        return maxPIExceptionPercentage;
+    }
+
+    public void setMaxPIExceptionPercentage(double maxPIExceptionPercentage) {
+        this.maxPIExceptionPercentage = maxPIExceptionPercentage;
     }
 
     public double getStartPiReduceFactor() {

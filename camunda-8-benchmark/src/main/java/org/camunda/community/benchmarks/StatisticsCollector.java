@@ -1,6 +1,5 @@
 package org.camunda.community.benchmarks;
 
-import com.codahale.metrics.ConsoleReporter;
 import com.codahale.metrics.Meter;
 import com.codahale.metrics.Snapshot;
 import com.codahale.metrics.Timer;
@@ -28,7 +27,7 @@ public class StatisticsCollector {
     private long lastPrintCompletedProcessInstances = 0;
     private long lastPrintCompletedJobs = 0;
     private long lastPrintStartedProcessInstancesBackpressure = 0;
-
+    private long lastPrintStartedProcessInstancesException = 0;
     private long piPerSecondGoal;
 
     @PostConstruct
@@ -45,11 +44,15 @@ public class StatisticsCollector {
 
         long count = getStartedPiMeter().getCount();
         long backpressure = getBackpressureOnStartPiMeter().getCount();
+        long piException = getProcessInstancesExceptionOnStartPiMeter().getCount();
         System.out.println("PI STARTED:     " + f(count) + " (+ " + f(count-lastPrintStartedProcessInstances) + ") Last minute rate: " + f(getStartedPiMeter().getOneMinuteRate()));
-        System.out.print("  Backpressure: " + f(backpressure) + " (+ " + f(backpressure - lastPrintStartedProcessInstancesBackpressure) + ") Last minute rate: " + f(getBackpressureOnStartPiMeter().getOneMinuteRate()));
-        System.out.println(". Percentage: " + fpercent(getBackpressureOnStartPercentage()) + " %");
+        System.out.print("  Exceptions: " + f(piException) + " (+ " + f(piException - lastPrintStartedProcessInstancesException) + ") Last minute rate: " + f(getProcessInstancesExceptionOnStartPiMeter().getOneMinuteRate()));
+        System.out.println(". Exceptions Percentage: " + fpercent(getProcessInstancesExceptionOnStartPercentage()) + " %");
+        System.out.print("  Backpressure (only Camunda 8): " + f(backpressure) + " (+ " + f(backpressure - lastPrintStartedProcessInstancesBackpressure) + ") Last minute rate: " + f(getBackpressureOnStartPiMeter().getOneMinuteRate()));
+        System.out.println(". Backpressure Percentage: " + fpercent(getBackpressureOnStartPercentage()) + " %");
         lastPrintStartedProcessInstances = count;
         lastPrintStartedProcessInstancesBackpressure = backpressure;
+        lastPrintStartedProcessInstancesException = piException;
 
         count = getCompletedProcessInstancesMeter().getCount();
         System.out.print("PI COMPLETED:   " + f(count) + " (+ " + f(count-lastPrintCompletedProcessInstances) + ") Last minute rate: " + f(getCompletedProcessInstancesMeter().getOneMinuteRate()));
@@ -84,6 +87,10 @@ public class StatisticsCollector {
         return (getBackpressureOnStartPiMeter().getOneMinuteRate() / getStartedPiMeter().getOneMinuteRate()) * 100;
     }
 
+    public double getProcessInstancesExceptionOnStartPercentage() {
+        return (getProcessInstancesExceptionOnStartPiMeter().getOneMinuteRate() / getStartedPiMeter().getOneMinuteRate()) * 100;
+    }
+
     public Meter getStartedPiMeter() {
         return dropwizardMetricRegistry.meter("pi_started" );
     }
@@ -98,6 +105,9 @@ public class StatisticsCollector {
     }
     public Meter getBackpressureOnStartPiMeter() {
         return dropwizardMetricRegistry.meter("pi_backpressure" );
+    }
+    public Meter getProcessInstancesExceptionOnStartPiMeter() {
+        return dropwizardMetricRegistry.meter("pi_exception" );
     }
 
     public void hintOnNewPiPerSecondGoald(long piPerSecondGoal) {

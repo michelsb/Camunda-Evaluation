@@ -30,7 +30,7 @@ public class CommandStartPIWrapper extends CommandWrapper {
                     this.bpmnProcessId,
                     new StartProcessInstanceDto()
                             .variables(this.variables));
-        } catch (ApiException e) {
+        } catch (Exception e) {
             this.commandExceptionHandlingStrategy.handleCommandError(this, e);
         }
     }
