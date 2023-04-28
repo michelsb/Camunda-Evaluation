@@ -165,7 +165,7 @@ public class StartPiScheduler {
         // Calculate current ration jobCompletion/startRate
         double ratio = stats.getCompletedJobsMeter().getOneMinuteRate() / stats.getStartedPiMeter().getOneMinuteRate();
 
-        if (ratio >= bestRatio) {
+        /*if (ratio >= bestRatio) {
             LOG.info("Found better ratio: "+ratio+" (instead of "+bestRatio+"). Remember start rate " + piStartedGoal);
             bestRatio = ratio;
             bestStartRate = piStartedGoal;
@@ -175,7 +175,7 @@ public class StartPiScheduler {
                 adjustStartRateTo(bestStartRate);
                 return;
             }
-        }
+        }*/
 
         if (piStartedRate < (0.5*piStartedGoal)) {
             rate = Math.round(Math.ceil(piStartedRate));
