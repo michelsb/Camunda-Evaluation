@@ -9,9 +9,9 @@ scrape_configs:
     scrape_interval: 5s
     metrics_path: /actuator/prometheus
     static_configs:
-      - targets: ['172.31.27.13:8088']
+      - targets: ['host.docker.internal:8088']
   - job_name: 'spring-boot-camunda8'
     scrape_interval: 5s
     metrics_path: /actuator/prometheus
     static_configs:
-      - targets: ['172.31.25.141:8088']
+      - targets: ['host.docker.internal:8088']

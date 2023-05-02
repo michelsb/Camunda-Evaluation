@@ -5,16 +5,16 @@
       <bpmn:extensionElements />
       <bpmn:outgoing>SequenceFlow_1swotv4</bpmn:outgoing>
     </bpmn:startEvent>
-    <bpmn:serviceTask id="task1" name="task1" camunda:type="external" camunda:topic="benchmark-task-benchmarkStarter1">
+    <bpmn:serviceTask id="task1" name="task1" camunda:type="external" camunda:topic="benchmark-task-1-benchmarkStarter1">
       <bpmn:incoming>SequenceFlow_1swotv4</bpmn:incoming>
       <bpmn:outgoing>Flow_13nehq4</bpmn:outgoing>
     </bpmn:serviceTask>
     <bpmn:sequenceFlow id="SequenceFlow_1swotv4" sourceRef="start" targetRef="task1" />
-    <bpmn:serviceTask id="task2" name="task2" camunda:type="external" camunda:topic="benchmark-task-benchmarkStarter1">
+    <bpmn:serviceTask id="task2" name="task2" camunda:type="external" camunda:topic="benchmark-task-2-benchmarkStarter1">
       <bpmn:incoming>Flow_13nehq4</bpmn:incoming>
       <bpmn:outgoing>SequenceFlow_19e406m</bpmn:outgoing>
     </bpmn:serviceTask>
-    <bpmn:serviceTask id="task3" name="task3" camunda:type="external" camunda:topic="benchmark-task-benchmarkStarter1">
+    <bpmn:serviceTask id="task3" name="task3" camunda:type="external" camunda:topic="benchmark-task-3-benchmarkStarter1">
       <bpmn:incoming>SequenceFlow_19e406m</bpmn:incoming>
       <bpmn:outgoing>SequenceFlow_1fcsq3j</bpmn:outgoing>
     </bpmn:serviceTask>
@@ -27,17 +27,17 @@
       </bpmn:timerEventDefinition>
     </bpmn:intermediateCatchEvent>
     <bpmn:sequenceFlow id="SequenceFlow_1fcsq3j" sourceRef="task3" targetRef="Gateway_09jrxib" />
-    <bpmn:serviceTask id="task4" name="task4" camunda:type="external" camunda:topic="benchmark-task-benchmarkStarter1">
+    <bpmn:serviceTask id="task4" name="task4" camunda:type="external" camunda:topic="benchmark-task-4-benchmarkStarter1">
       <bpmn:incoming>SequenceFlow_1izpkmf</bpmn:incoming>
       <bpmn:outgoing>SequenceFlow_1ktyxza</bpmn:outgoing>
     </bpmn:serviceTask>
     <bpmn:sequenceFlow id="SequenceFlow_1izpkmf" sourceRef="timer1" targetRef="task4" />
-    <bpmn:serviceTask id="task5" name="task5" camunda:type="external" camunda:topic="benchmark-task-benchmarkStarter1">
+    <bpmn:serviceTask id="task5" name="task5" camunda:type="external" camunda:topic="benchmark-task-5-benchmarkStarter1">
       <bpmn:incoming>SequenceFlow_1ktyxza</bpmn:incoming>
       <bpmn:outgoing>SequenceFlow_0h8p3qy</bpmn:outgoing>
     </bpmn:serviceTask>
     <bpmn:sequenceFlow id="SequenceFlow_1ktyxza" sourceRef="task4" targetRef="task5" />
-    <bpmn:serviceTask id="task6" name="task6" camunda:type="external" camunda:topic="benchmark-task-benchmarkStarter1">
+    <bpmn:serviceTask id="task6" name="task6" camunda:type="external" camunda:topic="benchmark-task-6-benchmarkStarter1">
       <bpmn:incoming>SequenceFlow_0h8p3qy</bpmn:incoming>
       <bpmn:outgoing>SequenceFlow_0pvrpnr</bpmn:outgoing>
     </bpmn:serviceTask>
@@ -50,17 +50,17 @@
       </bpmn:timerEventDefinition>
     </bpmn:intermediateCatchEvent>
     <bpmn:sequenceFlow id="SequenceFlow_0pvrpnr" sourceRef="task6" targetRef="timer2" />
-    <bpmn:serviceTask id="task7" name="task7" camunda:type="external" camunda:topic="benchmark-task-benchmarkStarter1">
+    <bpmn:serviceTask id="task7" name="task7" camunda:type="external" camunda:topic="benchmark-task-7-benchmarkStarter1">
       <bpmn:incoming>SequenceFlow_0momtrt</bpmn:incoming>
       <bpmn:outgoing>SequenceFlow_11i3dru</bpmn:outgoing>
     </bpmn:serviceTask>
     <bpmn:sequenceFlow id="SequenceFlow_0momtrt" sourceRef="timer2" targetRef="task7" />
-    <bpmn:serviceTask id="task8" name="task8" camunda:type="external" camunda:topic="benchmark-task-benchmarkStarter1">
+    <bpmn:serviceTask id="task8" name="task8" camunda:type="external" camunda:topic="benchmark-task-8-benchmarkStarter1">
       <bpmn:incoming>SequenceFlow_11i3dru</bpmn:incoming>
       <bpmn:outgoing>SequenceFlow_02ln9k8</bpmn:outgoing>
     </bpmn:serviceTask>
     <bpmn:sequenceFlow id="SequenceFlow_11i3dru" sourceRef="task7" targetRef="task8" />
-    <bpmn:serviceTask id="task9" name="task9" camunda:type="external" camunda:topic="benchmark-task-benchmarkStarter1">
+    <bpmn:serviceTask id="task9" name="task9" camunda:type="external" camunda:topic="benchmark-task-9-benchmarkStarter1">
       <bpmn:incoming>SequenceFlow_02ln9k8</bpmn:incoming>
       <bpmn:outgoing>SequenceFlow_18f5tlt</bpmn:outgoing>
     </bpmn:serviceTask>

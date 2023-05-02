@@ -128,7 +128,7 @@ public class StartPiScheduler {
      * Every 30 seconds the start rate might be adjusted based on the configured algorithm.
      * This starts after an initial warm-up-phase that can be configured.
      */
-    @Scheduled(fixedDelay = 30000, initialDelay = 30000)
+    @Scheduled(fixedDelay = 60000, initialDelay = 60000)
     public void adjustStartRates() {
         if (config.getWarmupPhaseDurationMillis() > 0 ) {
             if (warmupPhaseEndMillis == 0) {
@@ -165,7 +165,7 @@ public class StartPiScheduler {
         // Calculate current ration jobCompletion/startRate
         double ratio = stats.getCompletedJobsMeter().getOneMinuteRate() / stats.getStartedPiMeter().getOneMinuteRate();
 
-        if (ratio >= bestRatio) {
+        /*if (ratio >= bestRatio) {
             LOG.info("Found better ratio: "+ratio+" (instead of "+bestRatio+"). Remember start rate " + piStartedGoal);
             bestRatio = ratio;
             bestStartRate = piStartedGoal;
@@ -175,7 +175,7 @@ public class StartPiScheduler {
                 adjustStartRateTo(bestStartRate);
                 return;
             }
-        }
+        }*/
 
         if (piStartedRate < (0.5*piStartedGoal)) {
             rate = Math.round(Math.ceil(piStartedRate));
