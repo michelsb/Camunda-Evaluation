@@ -7,7 +7,7 @@
     <groupId>org.camunda.community</groupId>
     <artifactId>community-hub-release-parent</artifactId>
     <version>1.4.1</version>
-    <relativePath />
+    <relativePath/>
   </parent>
 
   <artifactId>camunda-7-benchmark</artifactId>
@@ -186,7 +186,7 @@
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-webflux</artifactId>
-      <version>2.6.7</version>
+      <version>3.2.10</version>
     </dependency>
     <dependency>
       <groupId>commons-lang</groupId>
