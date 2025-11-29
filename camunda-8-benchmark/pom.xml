@@ -7,7 +7,7 @@
     <groupId>org.camunda.community</groupId>
     <artifactId>community-hub-release-parent</artifactId>
     <version>1.4.1</version>
-    <relativePath />
+    <relativePath/>
   </parent>
 
   <artifactId>camunda-8-benchmark</artifactId>
@@ -38,7 +38,7 @@
     <dependency>
       <groupId>io.camunda</groupId>
       <artifactId>spring-zeebe-starter</artifactId>
-      <version>8.1.15</version>
+      <version>8.2.0</version>
     </dependency>
 
     <dependency>
